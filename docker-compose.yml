@@ -1,0 +1,49 @@
+version: "3.7"
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    ports:  
+      - "1433:1433"
+      - "5022:5022"
+    # restart: always
+    volumes:
+        # - ./mssql-data:/var/opt/mssql/data
+        - ./mssql-data:/var/opt/mssql
+        # - ./mssql-log:/var/opt/mssql/log
+        # - ./mssql-secrets:/var/opt/mssql/secrets
+        # - ./sqldata:/var/opt/sqlserver/data
+        # - /media/m/DataLinux/Code/Docker/db-playground/sqlbackup:/var/opt/mssql/backups
+        # - /media/m/DataLinux/Code/Docker/db-playground/sqlserver:/var/opt/sqlserver
+        # - /media/m/DataLinux/Code/Docker/db-playground/mssql:/var/opt/mssql
+    # command: sh -c "chown mssql /var/opt/mssql"
+    environment:
+      USERID: sa
+      SA_PASSWORD: Dev1234!
+      ACCEPT_EULA: Y
+  mongo:
+    image: amd64/mongo:4.4.3-bionic
+    restart: always
+    volumes:
+      - ./mongo-data:/data/db
+    ports:  
+        - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+  postgres:
+    image: supabase/postgres:0.14.0
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres # user: postgres
+
+
+# volumes:
+#   sqldata:
+#   mongo-data:
+#   sqlsystem:
+  # sqllog:
+  # sqlbackup:
+  # sqlsecrets:
+# volumes:
+#   sqlserver:
