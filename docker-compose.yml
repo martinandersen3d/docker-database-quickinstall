@@ -26,18 +26,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: secret
   postgres:
     image: supabase/postgres:0.14.0 
-    # image: postgres:latest 
-    # image: postgres
-    # command: sh -c "chmod -R 755 /var/lib"  
-    # command: sh -c "chmod -R 777 ."
-    # restart: always
     user: root # ubuntu username inside container 
-    
-    # command: 
-    #   - /bin/chown
-    #   - -R
-    #   - "1000"
-    #   - /var/lib/postgresql/data
     ports:
     #   host-port:container-port 
       - "5432:5432"
@@ -46,16 +35,7 @@ services:
       POSTGRES_PASSWORD: postgres # user: postgres
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data    
-        # - ./postgresql:/var/lib/postgresql
-        # - ./postgresql_data:/var/lib/postgresql/data
-        # - ./postgres-init.sh:/postgres-init.sh
-      # - ./postgres-init.sh:/postgres-init.sh 
-    # command: sh -c "/postgres-init.sh"
-    # command: sh -c "/postgres-init.sh"
-    # command: sh -c "chown -R 1000:1000 /var/lib/postgresql/data"
-    # command: sh -c 'cd /var/lib/postgresql/data && chown -R "1000" .' 
-
+      - ./postgres-data:/var/lib/postgresql/data
   mysql:
     image: amd64/mysql:8.0
     ports:
@@ -67,15 +47,3 @@ services:
       MYSQL_ROOT_PASSWORD: example # user: root
     volumes:
       - ./mysql-data:/var/lib/mysql
-
-
-# volumes:
-#   sqldata:
-#   mongo-data:
-#   sqlsystem:
-  # sqllog:
-  # sqlbackup:
-  # sqlsecrets:
-# volumes:
-#   sqlserver:
-
