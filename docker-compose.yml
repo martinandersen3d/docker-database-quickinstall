@@ -1,41 +1,72 @@
 version: "3.7"
 services:
   sqlserver:
+    # image: mcr.microsoft.com/mssql/server:2019-latest
     image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
-    ports:  
+    user: root # ubuntu username inside container
+    ports:
+    #   host-port:container-port 
       - "1433:1433"
-      - "5022:5022"
-    # restart: always
-    volumes:
-        # - ./mssql-data:/var/opt/mssql/data
-        - ./mssql-data:/var/opt/mssql
-        # - ./mssql-log:/var/opt/mssql/log
-        # - ./mssql-secrets:/var/opt/mssql/secrets
-        # - ./sqldata:/var/opt/sqlserver/data
-        # - /media/m/DataLinux/Code/Docker/db-playground/sqlbackup:/var/opt/mssql/backups
-        # - /media/m/DataLinux/Code/Docker/db-playground/sqlserver:/var/opt/sqlserver
-        # - /media/m/DataLinux/Code/Docker/db-playground/mssql:/var/opt/mssql
-    # command: sh -c "chown mssql /var/opt/mssql"
     environment:
-      USERID: sa
+      # SA_USERNAME: sa
       SA_PASSWORD: Dev1234!
       ACCEPT_EULA: Y
+    volumes:
+      - ./mssql-data:/var/opt/mssql/data
   mongo:
     image: amd64/mongo:4.4.3-bionic
     restart: always
     volumes:
       - ./mongo-data:/data/db
     ports:  
+    #   host-port:container-port
         - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: secret
   postgres:
-    image: supabase/postgres:0.14.0
+    image: supabase/postgres:0.14.0 
+    # image: postgres:latest 
+    # image: postgres
+    # command: sh -c "chmod -R 755 /var/lib"  
+    # command: sh -c "chmod -R 777 ."
+    # restart: always
+    user: root # ubuntu username inside container 
+    
+    # command: 
+    #   - /bin/chown
+    #   - -R
+    #   - "1000"
+    #   - /var/lib/postgresql/data
     ports:
+    #   host-port:container-port 
       - "5432:5432"
     environment:
+      POSTGRES_USER: postgres # user: postgres
       POSTGRES_PASSWORD: postgres # user: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data    
+        # - ./postgresql:/var/lib/postgresql
+        # - ./postgresql_data:/var/lib/postgresql/data
+        # - ./postgres-init.sh:/postgres-init.sh
+      # - ./postgres-init.sh:/postgres-init.sh 
+    # command: sh -c "/postgres-init.sh"
+    # command: sh -c "/postgres-init.sh"
+    # command: sh -c "chown -R 1000:1000 /var/lib/postgresql/data"
+    # command: sh -c 'cd /var/lib/postgresql/data && chown -R "1000" .' 
+
+  mysql:
+    image: amd64/mysql:8.0
+    ports:
+    #   host-port:container-port
+      - 3309:3306
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example # user: root
+    volumes:
+      - ./mysql-data:/var/lib/mysql
 
 
 # volumes:
@@ -47,3 +78,4 @@ services:
   # sqlsecrets:
 # volumes:
 #   sqlserver:
+
