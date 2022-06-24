@@ -13,17 +13,17 @@ services:
       ACCEPT_EULA: Y
     volumes:
       - ./mssql-data:/var/opt/mssql/data
-  mongo:
-    image: amd64/mongo:4.4.3-bionic
-    restart: always
-    volumes:
-      - ./mongo-data:/data/db
-    ports:  
-    #   host-port:container-port
-        - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: secret
+  #mongo:
+    #image: amd64/mongo:4.4.3-bionic
+    #restart: always
+    #volumes:
+      #- ./mongo-data:/data/db
+    #ports:  
+      #host-port:container-port
+        #- "27011:27017"
+    #environment:
+      #MONGO_INITDB_ROOT_USERNAME: root
+      #MONGO_INITDB_ROOT_PASSWORD: secret
   postgres:
     image: supabase/postgres:0.14.0 
     user: root # ubuntu username inside container 
