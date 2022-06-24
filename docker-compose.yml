@@ -13,17 +13,20 @@ services:
       ACCEPT_EULA: Y
     volumes:
       - ./mssql-data:/var/opt/mssql/data
-  #mongo:
-    #image: amd64/mongo:4.4.3-bionic
-    #restart: always
-    #volumes:
-      #- ./mongo-data:/data/db
-    #ports:  
-      #host-port:container-port
-        #- "27011:27017"
-    #environment:
-      #MONGO_INITDB_ROOT_USERNAME: root
-      #MONGO_INITDB_ROOT_PASSWORD: secret
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    volumes:
+      - ./mongo-data:/data/db
+    ports:  
+    #   host-port:container-port
+        - "27018:27017"
+    environment:
+      # I cant get it to work with usee/passwords, so just disable it
+      # MONGO_INITDB_ROOT_USERNAME: root
+      # MONGO_INITDB_ROOT_PASSWORD: secret
+      PUID: 1000
+      PGID: 1000
   postgres:
     image: supabase/postgres:0.14.0 
     user: root # ubuntu username inside container 
@@ -47,3 +50,12 @@ services:
       MYSQL_ROOT_PASSWORD: example # user: root
     volumes:
       - ./mysql-data:/var/lib/mysql
+  redis:
+    image: redis:alpine
+    container_name: redis_db
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis-data:/data
+    restart: always

@@ -2,3 +2,4 @@ mssql-data
 mongo-data
 mysql-data
 postgres-data
+redis-data
